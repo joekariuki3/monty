@@ -1,0 +1,26 @@
+#include "monty.h"
+
+/**
+ * addNode - add new node to the list
+ * @num: int to add to the list
+ * Return: pointer to the node added
+ */
+char *addNode(int num)
+{
+	stack_t *newNode;
+	char *head;
+
+	if(head == NULL)
+	{
+		head = (stack_t *)malloc(sizeof(newNode));
+		if (head == NULL)
+		{
+			fprintf(stderr, "Error: malloc failed");
+			exit(EXIT_FAILURE.);
+		}
+		head->n = num;
+		head->next = NULL;
+		head->prev = NULL;
+	}
+
+}
