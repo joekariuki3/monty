@@ -32,13 +32,18 @@ typedef struct stack_s
  */
 typedef struct instruction_s
 {
-	char *opcode;
-	void (*f)(stack_t **stack, unsigned int line_number);
+        char *opcode;
+        void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
+
+stack_t **head;
 
 void pall_func(stack_t **stack, unsigned int num);
 void push_func(stack_t **stack, unsigned int num);
 
 char *readFile(char *filename);
 void processLine(FILE *file);
+char *getOpcode(char *rawopcode);
+char *getOpnum(char *rawopcode);
+void check_key(char *opcode, int lineNumber);
 #endif
