@@ -11,7 +11,6 @@ int main(int argc, char **argv)
 {
 	char *filename = NULL, *readFileResult = NULL;
 
-
 	if (argc != 2)
 	{
 		fprintf(stderr, "USAGE: monty file\n");
@@ -20,7 +19,7 @@ int main(int argc, char **argv)
 	filename = argv[1];
 
 	readFileResult = readFile(filename);
-	if(readFileResult)
+	if (readFileResult)
 	{
 		;
 	}

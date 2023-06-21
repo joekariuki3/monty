@@ -36,6 +36,9 @@ typedef struct instruction_s
 	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
+void pall_func(stack_t **stack, unsigned int num);
+void push_func(stack_t **stack, unsigned int num);
+
 char *readFile(char *filename);
 void processLine(FILE *file);
 #endif

@@ -29,41 +29,50 @@ char *readFile(char *filename)
  */
 void processLine(FILE *file)
 {
-	char line[256], ch, opcode[256];
-	int i, lineNumber = 0, chCount = 1;
+	char line[256], ch, rawopcode[256], opnum[256];
+	int i, lineNumber = 0, chCount = 1 /*,match = 0*/;
+	instruction_t command[] = {
+                {"pall", pall_func},
+                {"push", push_func},
+                {NULL, NULL}
+        };
+
 
 	while (fgets(line, sizeof(line), file) != NULL)
 	{
-		/*Iterate over each character in the line checking char count*/
-		for (i = 0; line[i] != '\0'; i++)
+		for (i = 0; line[i] != '\0'; i++)/*Iterate over each char in line*/
 		{
 			ch = line[i];
-			/*Check if the character is a letter or digit*/
-			if (isalpha(ch) || isdigit(ch))
+			if (isalpha(ch) || isdigit(ch))/*Check if the char letter or digit*/
 			{
-				/*Process the character as needed*/
-				if (chCount <= 4 && isalpha(ch) )
-				{
-					opcode[chCount - 1] = ch;
-				}
-				
-				if (chCount > 4 && isdigit(ch))
-				{
-					printf("(%c)", ch);
-				}
+				rawopcode[chCount - 1] = ch;
 				chCount++; /* count char per line */
 			}
 		}
 		lineNumber++;/* keep track of line number*/
-		opcode[chCount - 1] = '\0';/* add null teminater to string opcode*/
-
-		if (strlen(opcode) > 0)/* check is opcode has data*/
+		rawopcode[chCount - 1] = '\0';/* add null teminater to string opcode*/
+		for (i = 4; rawopcode[i] != '\0'; i++)/*extract digit from line*/
 		{
-			printf("%d -> %s\n", lineNumber, opcode);
+			if (isalpha(rawopcode[i]))
+				break;
+			if (isdigit(rawopcode[i]))
+				opnum[i - 4] = rawopcode[i];
 		}
-
-		opcode[0] = '\0';
-		/*opnum[0] = '\0';*/
-		chCount = 1;/* next line start counting char again*/
+		opnum[i - 4] = '\0';/* add Null terminater at end*/
+		if (opnum[0] != '\0')
+		{
+			;
+		}
+		if (strlen(rawopcode) > 0)/* check is rawopcode has data*/
+		{
+			for(i = 0; command[i].opcode != NULL; i++)
+			{
+				if(strncmp(rawopcode, command[i].opcode, 4) == 0)
+					printf("%d --> %s %s\n",lineNumber, command[i].opcode, opnum);
+			}
+		}
+		opnum[0] = '\0';/* empty array for next loop */
+		rawopcode[0] = '\0';/* empty array for next loop */
+		chCount = 1;/*next line start counting char again*/
 	}
 }
