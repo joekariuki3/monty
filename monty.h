@@ -44,6 +44,8 @@ void pint_func(stack_t **stack, unsigned int lineNumber);
 void pop_func(stack_t **head, unsigned int lineNumber);
 void swap_func(stack_t **head, unsigned int lineNumber);
 void add_func(stack_t **head, unsigned int lineNumber);
+void sub_func(stack_t **head, unsigned int lineNumber);
+void nop_func(stack_t **head, unsigned int lineNumber);
 extern int gbopnum;
 int gbopnum;
 char *readFile(char *filename);
