@@ -67,7 +67,8 @@ void check_key(char *opcode, int lineNumber)
 	int i;
 	stack_t **head = NULL;
 	instruction_t key[] = {{"push", push_func},
-		{"pall", pall_func}, {"pint", pint_func}, {"pop", pop_func}, {NULL, NULL}};
+		{"pall", pall_func}, {"pint", pint_func},
+		{"pop", pop_func}, {"swap", swap_func}, {"add", add_func}, {NULL, NULL}};
 
 	for (i = 0; key[i].opcode != NULL; i++)
 	{

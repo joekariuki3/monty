@@ -99,3 +99,29 @@ void pop_func(stack_t **head, unsigned int lineNumber)
 	printf("L%u: can't pop an empty stack\n", lineNumber);
 	exit(EXIT_FAILURE);
 }
+
+/**
+ *swap_func - Function that swaps the number of the top two doubly linked list.
+ *@head: Reference to the doubly linked list.
+ *@lineNumber: The line number being evaluated.
+ */
+void swap_func(stack_t **head, unsigned int lineNumber)
+{
+	stack_t *temp;
+	int help;
+
+	if (head == NULL)
+		head = malloc(sizeof(stack_t));
+	temp = *head;
+	if (temp == NULL || temp->next == NULL)
+	{
+		printf("L%u: can't swap, stack too short\n", lineNumber);
+		exit(EXIT_FAILURE);
+	}
+	else
+	{
+		help = temp->n;
+		temp->n = temp->next->n;
+		temp->next->n = help;
+	}
+}
