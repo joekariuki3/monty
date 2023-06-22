@@ -40,10 +40,11 @@ stack_t **head;
 
 void pall_func(stack_t **stack, unsigned int num);
 void push_func(stack_t **stack, unsigned int num);
-
+extern int gbopnum;
+int gbopnum;
 char *readFile(char *filename);
 void processLine(FILE *file);
 char *getOpcode(char *rawopcode);
-char *getOpnum(char *rawopcode);
+int getOpnum(char *rawopcode);
 void check_key(char *opcode, int lineNumber);
 #endif

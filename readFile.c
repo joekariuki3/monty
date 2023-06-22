@@ -29,8 +29,8 @@ char *readFile(char *filename)
  */
 void processLine(FILE *file)
 {
-	char line[256], ch, rawopcode[256], *opcode = NULL, *opnum = NULL;
-	int i, chCount = 1;
+	char line[256], ch, rawopcode[256], *opcode = NULL;
+	int i, chCount = 1, opnum;
 	unsigned int lineNumber = 0;
 
 	while (fgets(line, sizeof(line), file) != NULL)
@@ -46,25 +46,28 @@ void processLine(FILE *file)
 		}
 		lineNumber++;/* keep track of line number*/
 		rawopcode[chCount - 1] = '\0';/* add null teminater to string opcode*/
-
 		opcode = getOpcode(rawopcode);
 		opnum = getOpnum(rawopcode);
-
+		gbopnum = opnum;
 		if (rawopcode[0] != '\0')
-		{
 			check_key(opcode, lineNumber);
-		}
-
 		free(opcode);
-		free(opnum);
 		rawopcode[0] = '\0';/* empty array for next loop */
 		chCount = 1;/*next line start counting char again*/
 	}
 }
+
+/**
+ * check_key - look for the opcode in array if it is valid
+ * @opcode: opcode or command to validate
+ * @lineNumber: line number from the file
+ */
 void check_key(char *opcode, int lineNumber)
 {
 	int i;
-	instruction_t key[] = {{"push", push_func},{"pall", pall_func},{NULL, NULL}};
+	stack_t **head = NULL;
+	instruction_t key[] = {{"push", push_func},
+		{"pall", pall_func}, {NULL, NULL}};
 
 	for (i = 0; key[i].opcode != NULL; i++)
 	{
@@ -84,8 +87,13 @@ void check_key(char *opcode, int lineNumber)
 			free(head);
 		exit(EXIT_FAILURE);
 	}
-
 }
+
+/**
+ * getOpcode - extracts opcode from the rawopcode from the file line x
+ * @rawopcode: string from file line
+ * Return: ocode the
+ */
 char *getOpcode(char *rawopcode)
 {
 	int i;
@@ -93,31 +101,34 @@ char *getOpcode(char *rawopcode)
 
 	opcode = malloc(sizeof(rawopcode));
 	for (i = 0; rawopcode[i] != '\0'; i++)
-        {
-                if (i < 4 && isalpha(rawopcode[i]))
+	{
+		if (i < 4 && isalpha(rawopcode[i]))
 			opcode[i] = rawopcode[i];
-        }
+	}
 	opcode[4] = '\0';/* add Null terminater at end*/
 	return (opcode);
 }
 
-char *getOpnum(char *rawopcode)
+/**
+ * getOpnum - extracts int from the rawopcode from the file line x
+ * @rawopcode: string from file line
+ * Return: returns the int or -1
+ */
+int getOpnum(char *rawopcode)
 {
 	int i;
 	char *opnum = NULL;
 
-	if(rawopcode[0] == '\0')
-		return (NULL);
+	if (rawopcode[0] == '\0')
+		return (-1);
 	opnum = malloc(sizeof(rawopcode));
 	for (i = 4; rawopcode[i] != '\0'; i++)/*extract digit from line*/
-        {
-                if (isalpha(rawopcode[i]))
-		{
+	{
+		if (isalpha(rawopcode[i]))
 			break;
-		}
-                if (isdigit(rawopcode[i]))
-                        opnum[i - 4] = rawopcode[i];
-        }
-        opnum[i - 4] = '\0';/* add Null terminater at end*/
-	return (opnum);
+		if (isdigit(rawopcode[i]))
+			opnum[i - 4] = rawopcode[i];
+	}
+	opnum[i - 4] = '\0';/* add Null terminater at end*/
+	return (atoi(opnum));
 }

@@ -1,5 +1,4 @@
 #include"monty.h"
-
 /**
  * main - start of the main function
  * @argc: number of arguments subbmited
