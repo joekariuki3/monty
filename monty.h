@@ -40,6 +40,7 @@ stack_t **head;
 
 void pall_func(stack_t **stack, unsigned int num);
 void push_func(stack_t **stack, unsigned int num);
+void pint_func(stack_t **stack, unsigned int num);
 extern int gbopnum;
 int gbopnum;
 char *readFile(char *filename);

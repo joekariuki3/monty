@@ -55,3 +55,18 @@ void push_func(stack_t **head, unsigned int lineNumber)
 	/*Update the head pointer*/
 	*head = newNode;
 }
+/**
+ * pint_func - prints the value at top of stack
+ * @head: point to begining of the list
+ * @lineNumber: line number of the file
+ */
+void pint_func(stack_t **head, unsigned int lineNumber)
+{
+	if (*head != NULL)
+		printf("%d\n", (*head)->n);
+	else if (*head == NULL)
+	{
+		printf("L%u: can't pint, stack empty\n", lineNumber);
+		exit(EXIT_FAILURE);
+	}
+}
