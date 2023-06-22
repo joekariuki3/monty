@@ -67,13 +67,12 @@ void check_key(char *opcode, int lineNumber)
 	int i;
 	stack_t **head = NULL;
 	instruction_t key[] = {{"push", push_func},
-		{"pall", pall_func}, {"pint", pint_func}, {NULL, NULL}};
+		{"pall", pall_func}, {"pint", pint_func}, {"pop", pop_func}, {NULL, NULL}};
 
 	for (i = 0; key[i].opcode != NULL; i++)
 	{
 		if ((strcmp(opcode, key[i].opcode)) == 0)
 		{
-			head = malloc(sizeof(stack_t));
 			key[i].f(head, lineNumber);
 			break;
 		}

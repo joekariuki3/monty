@@ -15,6 +15,8 @@ void pall_func(stack_t **head, unsigned int lineNumber)
 		;
 	}
 
+	if (head == NULL)
+		head = malloc(sizeof(stack_t));
 	temp = *head;
 	while (temp != NULL)
 	{
@@ -35,6 +37,8 @@ void push_func(stack_t **head, unsigned int lineNumber)
 	{
 		;
 	}
+	if (head == NULL)
+		head = malloc(sizeof(stack_t));
 	/*Create a new node*/
 	if (newNode == NULL)
 	{
@@ -62,6 +66,8 @@ void push_func(stack_t **head, unsigned int lineNumber)
  */
 void pint_func(stack_t **head, unsigned int lineNumber)
 {
+	if (head == NULL)
+		head = malloc(sizeof(stack_t));
 	if (*head != NULL)
 		printf("%d\n", (*head)->n);
 	else if (*head == NULL)
@@ -69,4 +75,27 @@ void pint_func(stack_t **head, unsigned int lineNumber)
 		printf("L%u: can't pint, stack empty\n", lineNumber);
 		exit(EXIT_FAILURE);
 	}
+}
+/**
+ *pop_func - the function that removes the top element of the stack
+ *@head: Reference to the doubly linked list.
+ *@lineNumber: The line number being evaluated.
+ */
+void pop_func(stack_t **head, unsigned int lineNumber)
+{
+	stack_t *temp;
+
+	if (head == NULL)
+		head = malloc(sizeof(stack_t));
+	temp = *head;
+	if (temp != NULL)
+	{
+		*head = (*head)->next;
+		free(temp);
+		if (*head != NULL)
+			(*head)->prev = NULL;
+		return;
+	}
+	printf("L%u: can't pop an empty stack\n", lineNumber);
+	exit(EXIT_FAILURE);
 }
