@@ -1,4 +1,5 @@
 #include "monty.h"
+global_t data = {NULL, NULL, NULL};
 
 /**
  * pall_func - prints all items in the list
@@ -15,8 +16,6 @@ void pall_func(stack_t **head, unsigned int lineNumber)
 		;
 	}
 
-	if (head == NULL)
-		head = malloc(sizeof(stack_t));
 	temp = *head;
 	while (temp != NULL)
 	{
@@ -31,32 +30,29 @@ void pall_func(stack_t **head, unsigned int lineNumber)
  */
 void push_func(stack_t **head, unsigned int lineNumber)
 {
-	stack_t *newNode = (stack_t *)malloc(sizeof(stack_t));
+	int value;
+	stack_t *newNode;
 
-	if (lineNumber > 1)
+	value = atoi(data.opnum);
+
+	if (lineNumber > 0)
 	{
 		;
 	}
-	if (head == NULL)
-		head = malloc(sizeof(stack_t));
-	/*Create a new node*/
+
+	newNode = malloc(sizeof(stack_t));
 	if (newNode == NULL)
 	{
-		fprintf(stderr, "Error: malloc failed\n");
+		fprintf(stderr, "Error: Failed to allocate memory\n");
 		exit(EXIT_FAILURE);
 	}
-	/*Set the node's data*/
-	newNode->n = gbopnum;
-	/*Set the next pointer of the new node*/
-	newNode->next = *head;
-	/*Set the previous pointer of the new node*/
+
+	newNode->n = value;
 	newNode->prev = NULL;
-	/*Update the previous pointer of the previous head, if it exists*/
+	newNode->next = *head;
+
 	if (*head != NULL)
-	{
 		(*head)->prev = newNode;
-	}
-	/*Update the head pointer*/
 	*head = newNode;
 }
 /**
@@ -66,8 +62,6 @@ void push_func(stack_t **head, unsigned int lineNumber)
  */
 void pint_func(stack_t **head, unsigned int lineNumber)
 {
-	if (head == NULL)
-		head = malloc(sizeof(stack_t));
 	if (*head != NULL)
 		printf("%d\n", (*head)->n);
 	else if (*head == NULL)
@@ -85,8 +79,6 @@ void pop_func(stack_t **head, unsigned int lineNumber)
 {
 	stack_t *temp;
 
-	if (head == NULL)
-		head = malloc(sizeof(stack_t));
 	temp = *head;
 	if (temp != NULL)
 	{
@@ -110,8 +102,6 @@ void swap_func(stack_t **head, unsigned int lineNumber)
 	stack_t *temp;
 	int help;
 
-	if (head == NULL)
-		head = malloc(sizeof(stack_t));
 	temp = *head;
 	if (temp == NULL || temp->next == NULL)
 	{

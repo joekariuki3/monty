@@ -29,8 +29,8 @@ char *readFile(char *filename)
  */
 void processLine(FILE *file)
 {
-	char line[256], ch, rawopcode[256], *opcode = NULL;
-	int i, chCount = 1, opnum;
+	char line[256], ch, rawopcode[256];
+	int i, chCount = 1;
 	unsigned int lineNumber = 0;
 
 	while (fgets(line, sizeof(line), file) != NULL)
@@ -46,12 +46,12 @@ void processLine(FILE *file)
 		}
 		lineNumber++;/* keep track of line number*/
 		rawopcode[chCount - 1] = '\0';/* add null teminater to string opcode*/
-		opcode = getOpcode(rawopcode);
-		opnum = getOpnum(rawopcode);
-		gbopnum = opnum;
+
+		data.opcode = getOpcode(rawopcode);
+		data.opnum = getOpnum(rawopcode);
+
 		if (rawopcode[0] != '\0')
-			check_key(opcode, lineNumber);
-		free(opcode);
+			check_key(data.opcode, lineNumber);
 		rawopcode[0] = '\0';/* empty array for next loop */
 		chCount = 1;/*next line start counting char again*/
 	}
@@ -65,7 +65,6 @@ void processLine(FILE *file)
 void check_key(char *opcode, int lineNumber)
 {
 	int i;
-	stack_t **head = NULL;
 	instruction_t key[] = {{"push", push_func},
 		{"pall", pall_func}, {"pint", pint_func},
 		{"pop", pop_func}, {"swap", swap_func}, {"add", add_func},
@@ -75,17 +74,13 @@ void check_key(char *opcode, int lineNumber)
 	{
 		if ((strcmp(opcode, key[i].opcode)) == 0)
 		{
-			key[i].f(head, lineNumber);
+			key[i].f(&(data.head), lineNumber);
 			break;
 		}
 	}
 	if (key[i].opcode == NULL)
 	{
 		fprintf(stderr, "L%d: unknown instruction %s\n", lineNumber, opcode);
-		if (opcode != NULL)
-			free(opcode);
-		if (head != NULL)
-			free(head);
 		exit(EXIT_FAILURE);
 	}
 }
@@ -113,15 +108,15 @@ char *getOpcode(char *rawopcode)
 /**
  * getOpnum - extracts int from the rawopcode from the file line x
  * @rawopcode: string from file line
- * Return: returns the int or -1
+ * Return: returns the str or NULL
  */
-int getOpnum(char *rawopcode)
+char *getOpnum(char *rawopcode)
 {
 	int i;
 	char *opnum = NULL;
 
 	if (rawopcode[0] == '\0')
-		return (-1);
+		return (NULL);
 	opnum = malloc(sizeof(rawopcode));
 	for (i = 4; rawopcode[i] != '\0'; i++)/*extract digit from line*/
 	{
@@ -131,5 +126,5 @@ int getOpnum(char *rawopcode)
 			opnum[i - 4] = rawopcode[i];
 	}
 	opnum[i - 4] = '\0';/* add Null terminater at end*/
-	return (atoi(opnum));
+	return (opnum);
 }

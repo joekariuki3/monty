@@ -36,7 +36,20 @@ typedef struct instruction_s
         void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
-stack_t **head;
+/**
+ * global_s - struct containing global variables
+ * @head: pointer to the start of the list
+ * @opnum: argument to add to the list
+ * @opcode: command
+ */
+typedef struct global_s
+{
+	stack_t *head;
+	char *opnum;
+	char *opcode;
+}global_t;
+extern global_t data;
+
 
 void pall_func(stack_t **stack, unsigned int lineNumber);
 void push_func(stack_t **stack, unsigned int lineNumber);
@@ -46,11 +59,9 @@ void swap_func(stack_t **head, unsigned int lineNumber);
 void add_func(stack_t **head, unsigned int lineNumber);
 void sub_func(stack_t **head, unsigned int lineNumber);
 void nop_func(stack_t **head, unsigned int lineNumber);
-extern int gbopnum;
-int gbopnum;
 char *readFile(char *filename);
 void processLine(FILE *file);
 char *getOpcode(char *rawopcode);
-int getOpnum(char *rawopcode);
+char *getOpnum(char *rawopcode);
 void check_key(char *opcode, int lineNumber);
 #endif
