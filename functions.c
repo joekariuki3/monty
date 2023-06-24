@@ -38,15 +38,6 @@ void push_func(stack_t **head, unsigned int lineNumber)
 		fprintf(stderr, "L%d: usage: push integer\n", lineNumber);
 		exit(EXIT_FAILURE);
 	}
-	while (*data.opcode != '\0')
-	{
-		if (!isdigit(*data.opcode))
-		{
-			fprintf(stderr, "L%d: usage: push integer\n", lineNumber);
-			exit(EXIT_FAILURE);
-		}
-		data.opcode++;
-	}
 	value = atoi(data.opnum);
 
 	newNode = malloc(sizeof(stack_t));
