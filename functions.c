@@ -33,12 +33,13 @@ void push_func(stack_t **head, unsigned int lineNumber)
 	int value;
 	stack_t *newNode;
 
-	value = atoi(data.opnum);
-
-	if (lineNumber > 0)
+	if (data.opnum == NULL)
 	{
-		;
+		fprintf(stderr, "L%d: usage: push integer\n", lineNumber);
+		exit(EXIT_FAILURE);
+
 	}
+	value = atoi(data.opnum);
 
 	newNode = malloc(sizeof(stack_t));
 	if (newNode == NULL)

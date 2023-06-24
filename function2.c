@@ -34,8 +34,6 @@ void sub_func(stack_t **head, unsigned int lineNumber)
 {
 	stack_t *temp;
 
-	if (head == NULL)
-		head = malloc(sizeof(stack_t));
 	temp = *head;
 	if (temp == NULL || temp->next == NULL)
 	{
