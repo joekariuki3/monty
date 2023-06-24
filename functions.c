@@ -33,11 +33,19 @@ void push_func(stack_t **head, unsigned int lineNumber)
 	int value;
 	stack_t *newNode;
 
-	if (data.opnum == NULL)
+	if (data.opnum == NULL || *data.opnum == '\0')
 	{
 		fprintf(stderr, "L%d: usage: push integer\n", lineNumber);
 		exit(EXIT_FAILURE);
-
+	}
+	while (*data.opcode != '\0')
+	{
+		if (!isdigit(*data.opcode))
+		{
+			fprintf(stderr, "L%d: usage: push integer\n", lineNumber);
+			exit(EXIT_FAILURE);
+		}
+		data.opcode++;
 	}
 	value = atoi(data.opnum);
 

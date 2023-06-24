@@ -29,31 +29,17 @@ char *readFile(char *filename)
  */
 void processLine(FILE *file)
 {
-	char line[256], ch, rawopcode[256];
-	int i, chCount = 1;
+	char *line = NULL;
+	size_t bufsize = 0;
 	unsigned int lineNumber = 0;
 
-	while (fgets(line, sizeof(line), file) != NULL)
+	while (getline(&line, &bufsize, file) != -1)
 	{
-		for (i = 0; line[i] != '\0'; i++)/*Iterate over each char in line*/
-		{
-			ch = line[i];
-			if (isalpha(ch) || isdigit(ch))/*Check if the char letter or digit*/
-			{
-				rawopcode[chCount - 1] = ch;
-				chCount++; /* count char per line */
-			}
-		}
+		data.opcode = strtok(line, " \t\n");
+		data.opnum = strtok(NULL, " \t\n");
 		lineNumber++;/* keep track of line number*/
-		rawopcode[chCount - 1] = '\0';/* add null teminater to string opcode*/
-
-		data.opcode = getOpcode(rawopcode);
-		data.opnum = getOpnum(rawopcode);
-
-		if (rawopcode[0] != '\0')
+		if (data.opcode[0] != '\0')
 			check_key(data.opcode, lineNumber);
-		rawopcode[0] = '\0';/* empty array for next loop */
-		chCount = 1;/*next line start counting char again*/
 	}
 }
 
@@ -83,48 +69,4 @@ void check_key(char *opcode, int lineNumber)
 		fprintf(stderr, "L%d: unknown instruction %s\n", lineNumber, opcode);
 		exit(EXIT_FAILURE);
 	}
-}
-
-/**
- * getOpcode - extracts opcode from the rawopcode from the file line x
- * @rawopcode: string from file line
- * Return: ocode the
- */
-char *getOpcode(char *rawopcode)
-{
-	int i;
-	char *opcode = NULL;
-
-	opcode = malloc(sizeof(rawopcode));
-	for (i = 0; rawopcode[i] != '\0'; i++)
-	{
-		if (i < 4 && isalpha(rawopcode[i]))
-			opcode[i] = rawopcode[i];
-	}
-	opcode[4] = '\0';/* add Null terminater at end*/
-	return (opcode);
-}
-
-/**
- * getOpnum - extracts int from the rawopcode from the file line x
- * @rawopcode: string from file line
- * Return: returns the str or NULL
- */
-char *getOpnum(char *rawopcode)
-{
-	int i;
-	char *opnum = NULL;
-
-	if (rawopcode[0] == '\0')
-		return (NULL);
-	opnum = malloc(sizeof(rawopcode));
-	for (i = 4; rawopcode[i] != '\0'; i++)/*extract digit from line*/
-	{
-		if (isalpha(rawopcode[i]))
-			break;
-		if (isdigit(rawopcode[i]))
-			opnum[i - 4] = rawopcode[i];
-	}
-	opnum[i - 4] = '\0';/* add Null terminater at end*/
-	return (opnum);
 }
